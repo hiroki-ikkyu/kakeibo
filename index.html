@@ -17,7 +17,7 @@
   --r:13px;--sb:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:calc(72px + var(--sb));overscroll-behavior:none;font-size:15px;line-height:1.4}
+body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:calc(62px + var(--sb));overscroll-behavior:none;font-size:15px;line-height:1.4}
 .screen{display:none}.screen.active{display:block;animation:fi .2s ease}
 @keyframes fi{from{opacity:0}to{opacity:1}}
 
@@ -100,9 +100,9 @@ body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto
 .emp{padding:40px 24px;text-align:center;color:var(--sec);font-size:14px}
 .emp-i{font-size:32px;margin-bottom:8px}
 
-/* Tab bar - tighter to bottom */
-.tbar{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(249,249,249,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--sep);padding:4px 0 var(--sb);z-index:100}
-.ti{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px 2px;cursor:pointer;border:none;background:none;font-family:inherit}
+/* Tab bar */
+.tbar{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(249,249,249,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--sep);padding:2px 0 calc(2px + var(--sb));z-index:100}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px 0;cursor:pointer;border:none;background:none;font-family:inherit}
 .ti-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
 .ti-icon svg{width:20px;height:20px}
 .ti-l{font-size:10px;font-weight:500;color:var(--sec)}
@@ -110,7 +110,7 @@ body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto
 .ti .ti-icon svg{fill:none;stroke:var(--sec);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .ti.active .ti-icon svg{stroke:var(--blue)}
 
-.fab{position:fixed;bottom:calc(68px + var(--sb));right:16px;width:50px;height:50px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:28px;font-weight:300;cursor:pointer;box-shadow:0 4px 16px rgba(0,122,255,.3);display:flex;align-items:center;justify-content:center;z-index:90;transition:transform .15s}
+.fab{position:fixed;bottom:calc(58px + var(--sb));right:16px;width:50px;height:50px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:28px;font-weight:300;cursor:pointer;box-shadow:0 4px 16px rgba(0,122,255,.3);display:flex;align-items:center;justify-content:center;z-index:90;transition:transform .15s}
 .fab:active{transform:scale(.9)}
 
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:200;align-items:flex-end;justify-content:center}
@@ -169,7 +169,12 @@ body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto
       <div class="sum-cell"><div class="sum-val" id="sum-wk">¥0</div><div class="sum-lbl" id="sum-wk-l">今週</div></div>
       <div class="sum-cell"><div class="sum-val" id="sum-mo">¥0</div><div class="sum-lbl">今月</div></div>
     </div>
-    <div class="rw"><span class="rw-i">🎁</span><span class="rw-l">ご褒美ストック</span><span class="rw-v pos" id="rw-v">¥0</span></div>
+    <div class="rw" onclick="toggleReward()" style="cursor:pointer"><span class="rw-i">🎁</span><span class="rw-l">ご褒美ストック</span><span class="rw-v pos" id="rw-v">¥0</span><span style="color:var(--ter);font-size:13px;margin-left:4px" id="rw-chv">▸</span></div>
+    <div id="rw-panel" style="display:none;border-top:.5px solid var(--sep);">
+      <div style="padding:12px 16px 8px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">欲しいものリスト</span><button style="background:none;border:none;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer" onclick="event.stopPropagation();openWishM()">+ 追加</button></div>
+      <div id="wish-list" style="padding:0 16px 8px"></div>
+      <div style="padding:8px 16px 12px"><button style="width:100%;padding:10px;background:rgba(52,199,89,.1);border:1px solid rgba(52,199,89,.2);border-radius:10px;color:var(--green);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" onclick="event.stopPropagation();openRewardUseM()">ご褒美を使う</button></div>
+    </div>
   </div>
   <div class="lh">支出 · 今日</div>
   <div class="card" id="td-card"><div id="td-list"></div></div>
@@ -226,7 +231,7 @@ body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto
   <div style="padding:0 16px"><button class="bs" onclick="openCatM()">カテゴリを追加</button></div>
   <div class="lh" style="margin-top:16px">支払い方法</div>
   <div class="card card-p" id="sv-cards"></div>
-  <div style="padding:0 16px"><button class="bs" onclick="openCardM()">カードを追加</button></div>
+  <div style="padding:0 16px"><button class="bs" onclick="openCardM()">支払い方法を追加</button></div>
   <div class="lh" style="margin-top:16px">データ</div>
   <div style="padding:0 16px">
     <button class="bs" onclick="doExp()">データをエクスポート</button>
@@ -300,13 +305,34 @@ body{font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto
   <button class="bs" onclick="cm('mo-cfm')">キャンセル</button>
 </div></div>
 
+<!-- Wishlist -->
+<div class="mo" id="mo-wish" onclick="mout(event,'mo-wish')"><div class="ml"><div class="mhd"></div><div class="mtt">欲しいものを追加</div>
+  <div class="fg"><label class="fl">アイテム名</label><input class="fi" id="i-wn" type="text" placeholder="AirPods Pro"></div>
+  <div class="fg"><label class="fl">目標金額</label><input class="fi" id="i-wp" type="number" inputmode="numeric" placeholder="39800"></div>
+  <button class="bp" onclick="addWish()">追加する</button>
+</div></div>
+
+<!-- Reward Use -->
+<div class="mo" id="mo-rwuse" onclick="mout(event,'mo-rwuse')"><div class="ml"><div class="mhd"></div><div class="mtt">ご褒美を使う</div>
+  <div class="fg"><label class="fl">金額</label><input class="fi" id="i-rwa" type="number" inputmode="numeric" placeholder="5000"></div>
+  <div class="fg"><label class="fl">何に使った？</label><input class="fi" id="i-rwm" type="text" placeholder="AirPods Pro"></div>
+  <button class="bp" style="background:var(--green)" onclick="useReward()">使用する</button>
+</div></div>
+
+<!-- Category Edit -->
+<div class="mo" id="mo-catedit" onclick="mout(event,'mo-catedit')"><div class="ml"><div class="mhd"></div><div class="mtt">カテゴリを編集</div>
+  <div class="fg"><label class="fl">カテゴリ名</label><input class="fi" id="i-cen" type="text"></div>
+  <div class="fg"><label class="fl">アイコン</label><input class="fi" id="i-cei" type="text" maxlength="4"></div>
+  <button class="bp" onclick="saveCatEdit()">保存</button>
+</div></div>
+
 <script>
-const K='kakeibo_v6';
+const K='kakeibo_v7';
 const DCATS=[{id:'transport',name:'交通費',icon:'🚃',c:'transport'},{id:'food',name:'食費',icon:'🍱',c:'food'},{id:'daily',name:'日用品',icon:'🧴',c:'daily'},{id:'entertainment',name:'娯楽',icon:'🎮',c:'entertainment'}];
 const DCARDS=['現金','AMEX','三井住友','楽天'];
 
-function df(){return{settings:{dailyBudget:3000,monthlyLimit:500000,wifeExpenses:{}},categories:[...DCATS],cards:[...DCARDS],expenses:[],subscriptions:[],incomes:[]};}
-function ld(){try{const d=JSON.parse(localStorage.getItem(K));if(!d)return null;d.settings.wifeExpenses=d.settings.wifeExpenses||{};d.categories=d.categories||[...DCATS];d.cards=d.cards||[...DCARDS];d.incomes=d.incomes||[];d.subscriptions.forEach(s=>{s.cycle=s.cycle||'monthly';s.nextDate=s.nextDate||'';});return d;}catch{return null;}}
+function df(){return{settings:{dailyBudget:3000,monthlyLimit:500000,wifeExpenses:{},rewardStartDate:td()},categories:[...DCATS],cards:[...DCARDS],expenses:[],subscriptions:[],incomes:[],wishlist:[],rewardUses:[]};}
+function ld(){try{const d=JSON.parse(localStorage.getItem(K));if(!d)return null;d.settings.wifeExpenses=d.settings.wifeExpenses||{};d.settings.rewardStartDate=d.settings.rewardStartDate||td();d.categories=d.categories||[...DCATS];d.cards=d.cards||[...DCARDS];d.incomes=d.incomes||[];d.wishlist=d.wishlist||[];d.rewardUses=d.rewardUses||[];d.subscriptions.forEach(s=>{s.cycle=s.cycle||'monthly';s.nextDate=s.nextDate||'';});return d;}catch{return null;}}
 function sv(){localStorage.setItem(K,JSON.stringify(D));}
 
 let D=ld()||df();if(!localStorage.getItem(K))sv();
@@ -329,9 +355,9 @@ function getMonday(d){d=new Date(d);const day=d.getDay();const diff=d.getDate()-
 function weekRange(d){const mon=getMonday(d);const sun=new Date(mon);sun.setDate(mon.getDate()+6);return{mon,sun};}
 function dateStr(d){return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
 function weekExp(ref){const{mon,sun}=weekRange(ref);const ms=dateStr(mon),ss=dateStr(sun);return D.expenses.filter(e=>e.date>=ms&&e.date<=ss);}
-function rwd(m){const now=new Date(),cm=mk(now);const ex=mExp(m),bd={};ex.forEach(e=>{bd[e.date]=(bd[e.date]||0)+e.amount;});const[y,mo]=m.split('-').map(Number);const cnt=m===cm?now.getDate()-1:dim(m);let r=0;for(let d=1;d<=cnt;d++){const ds=`${y}-${p2(mo)}-${p2(d)}`;r+=D.settings.dailyBudget-(bd[ds]||0);}return r;}
+function rwd(m){const now=new Date(),cm=mk(now);const ex=mExp(m),bd={};ex.forEach(e=>{bd[e.date]=(bd[e.date]||0)+e.amount;});const[y,mo]=m.split('-').map(Number);const cnt=m===cm?now.getDate()-1:dim(m);const startDate=D.settings.rewardStartDate||'2000-01-01';let r=0;for(let d=1;d<=cnt;d++){const ds=`${y}-${p2(mo)}-${p2(d)}`;if(ds<startDate)continue;r+=D.settings.dailyBudget-(bd[ds]||0);}const used=(D.rewardUses||[]).filter(u=>u.date.startsWith(m)).reduce((s,u)=>s+u.amount,0);return r-used;}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
-function confirm(title,msg,okText,fn){document.getElementById('cf-t').textContent=title;document.getElementById('cf-m').textContent=msg;document.getElementById('cf-ok').textContent=okText;document.getElementById('cf-ok').onclick=()=>{fn();cm('mo-cfm');};om('mo-cfm');}
+function showConfirm(title,msg,okText,fn){document.getElementById('cf-t').textContent=title;document.getElementById('cf-m').textContent=msg;document.getElementById('cf-ok').textContent=okText;document.getElementById('cf-ok').onclick=()=>{fn();cm('mo-cfm');};om('mo-cfm');}
 
 // Swipe (bidirectional)
 function initSw(container){
@@ -375,6 +401,16 @@ function rToday(){
   const{mon,sun}=weekRange(new Date());
   document.getElementById('sum-wk-l').textContent=`今週 ${mon.getMonth()+1}/${mon.getDate()}-${sun.getMonth()+1}/${sun.getDate()}`;
   const rw=rwd(mk());const rv=document.getElementById('rw-v');rv.textContent=(rw>=0?'+':'')+Y(rw);rv.className='rw-v '+(rw>=0?'pos':'neg');
+
+  // Wishlist
+  const wl=document.getElementById('wish-list');
+  if(D.wishlist.length){
+    wl.innerHTML=D.wishlist.map(w=>{
+      const pct=rw>0&&w.price>0?Math.min(Math.round(rw/w.price*100),100):0;
+      const canBuy=rw>=w.price;
+      return`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;"><span style="flex:1;font-size:14px">${w.name}</span><span style="font-size:13px;color:${canBuy?'var(--green)':'var(--sec)'};font-weight:500">${Y(w.price)}</span><button style="background:none;border:none;color:var(--ter);font-size:12px;cursor:pointer" onclick="event.stopPropagation();cfmDelWish('${w.id}')">×</button></div>`;
+    }).join('');
+  }else{wl.innerHTML='<div style="font-size:13px;color:var(--ter);padding:4px 0">まだ登録がありません</div>';}
 
   const entries=tExp().sort((a,b)=>b.ts-a.ts);const el=document.getElementById('td-list');const card=document.getElementById('td-card');const emp=document.getElementById('td-emp');
   if(!entries.length){card.style.display='none';emp.style.display='';el.innerHTML='';return;}
@@ -429,8 +465,8 @@ function rIncome(){
 }
 
 // === REVIEW ===
-const RV_MODES=['week','month','category','card'];
-const RV_LABELS=['週次','月次','カテゴリ別','カード別'];
+const RV_MODES=['week','month','category','card','reward'];
+const RV_LABELS=['週次','月次','カテゴリ別','カード別','ご褒美'];
 function rvMode(m){rvM=m;rvOffset=0;document.querySelectorAll('.rv-tab').forEach((t,i)=>t.classList.toggle('active',RV_MODES[i]===m));rReview();}
 function rvNav(d){rvOffset+=d;rReview();}
 
@@ -492,6 +528,19 @@ function rReview(){
     h+=`</div></div>`;
     sorted.forEach(([name,v],i)=>{h+=`<div class="bk-row"><div class="bk-icon" style="background:${colors[i%colors.length]}22">${cardIcons[name]||'💳'}</div><span class="bk-name">${name}</span><span class="bk-amt">${Y(v)}</span><span class="bk-pct">${total>0?Math.round(v/total*100):0}%</span></div>`;});
     h+=`</div>`;ct.innerHTML=h;
+  }else if(rvM==='reward'){
+    const ref=new Date();ref.setMonth(ref.getMonth()+rvOffset);const m=mk(ref);const[y,mo]=m.split('-').map(Number);
+    tt.textContent=`${y}年${mo}月`;
+    const stock=rwd(m);
+    const uses=(D.rewardUses||[]).filter(u=>u.date.startsWith(m));
+    const usedTotal=uses.reduce((s,u)=>s+u.amount,0);
+    let h=`<div class="card"><div class="sg"><div class="sc sc-border-r"><div class="sc-l">ストック</div><div class="sc-v" style="color:${stock>=0?'var(--green)':'var(--red)'};">${Y(stock)}</div></div><div class="sc"><div class="sc-l">使用済み</div><div class="sc-v">${Y(usedTotal)}</div></div></div></div>`;
+    h+=`<div class="lh">使用履歴</div><div class="card">`;
+    if(!uses.length)h+=`<div class="emp">まだ使用していません</div>`;
+    else uses.sort((a,b)=>b.date.localeCompare(a.date)).forEach((u,i)=>{
+      h+=`<div class="bk-row${i>0?' sep':''}"><div class="bk-icon" style="background:rgba(52,199,89,.1)">🎁</div><span class="bk-name">${u.memo||'ご褒美'}</span><span class="bk-amt">${Y(u.amount)}</span><span class="bk-pct" style="width:auto">${u.date.slice(5).replace('-','/')}</span></div>`;
+    });
+    h+=`</div>`;ct.innerHTML=h;
   }
 }
 
@@ -500,7 +549,7 @@ function rSet(){
   document.getElementById('sv-b').textContent=Y(D.settings.dailyBudget);
   document.getElementById('sv-l').textContent=Y(D.settings.monthlyLimit);
   document.getElementById('sv-w').textContent=Y(wE(mk()));
-  document.getElementById('sv-cats').innerHTML=D.categories.map(c=>`<span class="cc">${c.icon} ${c.name}<button class="cc-x" onclick="cfmDelCat('${c.id}')">×</button></span>`).join('');
+  document.getElementById('sv-cats').innerHTML=D.categories.map(c=>`<span class="cc">${c.icon} ${c.name}<button class="cc-x" onclick="editCatM('${c.id}')" style="background:rgba(0,122,255,.15);color:var(--blue)">✎</button><button class="cc-x" onclick="cfmDelCat('${c.id}')">×</button></span>`).join('');
   document.getElementById('sv-cards').innerHTML=D.cards.map((c,i)=>`<span class="cc">💳 ${c}<button class="cc-x" onclick="cfmDelCard(${i})">×</button></span>`).join('');
 }
 
@@ -537,7 +586,7 @@ function addExp(){
   editingId=null;sv();cm('mo-exp');toast(editingId?'保存しました ✓':'記録しました ✓');render();
 }
 function editExp(id){openExpM(id);}
-function cfmDelExp(id){confirm('支出を削除','この記録を削除しますか？','削除する',()=>{D.expenses=D.expenses.filter(e=>e.id!==id);sv();toast('削除しました');render();});}
+function cfmDelExp(id){showConfirm('支出を削除','この記録を削除しますか？','削除する',()=>{D.expenses=D.expenses.filter(e=>e.id!==id);sv();toast('削除しました');render();});}
 
 // Sub
 let selCyc='monthly',selSubCard='',editSubId=null;
@@ -559,7 +608,7 @@ function saveSub(){
   editSubId=null;sv();cm('mo-sub');toast('保存しました ✓');render();
 }
 function editSub(id){openSubM(id);}
-function cfmDelSub(id){confirm('サブスクを削除','このサブスクを削除しますか？','削除する',()=>{D.subscriptions=D.subscriptions.filter(s=>s.id!==id);sv();toast('削除しました');render();});}
+function cfmDelSub(id){showConfirm('サブスクを削除','このサブスクを削除しますか？','削除する',()=>{D.subscriptions=D.subscriptions.filter(s=>s.id!==id);sv();toast('削除しました');render();});}
 
 // Income
 let selIncType='salary';
@@ -577,7 +626,7 @@ function addInc(){
   sv();cm('mo-inc');toast('追加しました ✓');render();
 }
 function editInc(id){/* TODO: could add edit modal for income */toast('長押しで編集（準備中）');}
-function cfmDelInc(id){confirm('収入を削除','この収入記録を削除しますか？','削除する',()=>{D.incomes=D.incomes.filter(i=>i.id!==id);sv();toast('削除しました');render();});}
+function cfmDelInc(id){showConfirm('収入を削除','この収入記録を削除しますか？','削除する',()=>{D.incomes=D.incomes.filter(i=>i.id!==id);sv();toast('削除しました');render();});}
 
 // Settings
 let eF='';
@@ -586,13 +635,31 @@ function saveS(){const v=parseInt(document.getElementById('i-sv').value);if(isNa
 
 function openCatM(){document.getElementById('i-cn').value='';document.getElementById('i-ci').value='';om('mo-cat');}
 function addCat(){const n=document.getElementById('i-cn').value.trim();const i=document.getElementById('i-ci').value.trim()||'📌';if(!n){toast('名前を入力');return;}D.categories.push({id:n+'_'+Date.now().toString(36),name:n,icon:i,c:'default'});sv();cm('mo-cat');toast('追加しました ✓');render();}
-function cfmDelCat(id){if(D.categories.length<=1){toast('最低1つ必要');return;}confirm('カテゴリを削除','このカテゴリを削除しますか？','削除する',()=>{D.categories=D.categories.filter(c=>c.id!==id);sv();toast('削除しました');render();});}
+function cfmDelCat(id){if(D.categories.length<=1){toast('最低1つ必要');return;}showConfirm('カテゴリを削除','このカテゴリを削除しますか？','削除する',()=>{D.categories=D.categories.filter(c=>c.id!==id);sv();toast('削除しました');render();});}
 
 function openCardM(){document.getElementById('i-card').value='';om('mo-card');}
 function addCard(){const n=document.getElementById('i-card').value.trim();if(!n){toast('名前を入力');return;}D.cards.push(n);sv();cm('mo-card');toast('追加しました ✓');render();}
-function cfmDelCard(i){if(D.cards.length<=1){toast('最低1つ必要');return;}confirm('カードを削除',`${D.cards[i]}を削除しますか？`,'削除する',()=>{D.cards.splice(i,1);sv();toast('削除しました');render();});}
+function cfmDelCard(i){if(D.cards.length<=1){toast('最低1つ必要');return;}showConfirm('カードを削除',`${D.cards[i]}を削除しますか？`,'削除する',()=>{D.cards.splice(i,1);sv();toast('削除しました');render();});}
 
 function doExp(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`kakeibo_${td()}.json`;a.click();toast('エクスポート完了');}
+
+// Reward panel toggle
+function toggleReward(){const p=document.getElementById('rw-panel');const c=document.getElementById('rw-chv');if(p.style.display==='none'){p.style.display='';c.textContent='▾';}else{p.style.display='none';c.textContent='▸';}}
+
+// Wishlist
+function openWishM(){document.getElementById('i-wn').value='';document.getElementById('i-wp').value='';om('mo-wish');}
+function addWish(){const n=document.getElementById('i-wn').value.trim();const p=parseInt(document.getElementById('i-wp').value)||0;if(!n){toast('名前を入力');return;}D.wishlist.push({id:Date.now().toString(36),name:n,price:p});sv();cm('mo-wish');toast('追加しました ✓');render();}
+function cfmDelWish(id){showConfirm('欲しいものを削除','削除しますか？','削除する',()=>{D.wishlist=D.wishlist.filter(w=>w.id!==id);sv();toast('削除しました');render();});}
+
+// Reward use
+function openRewardUseM(){document.getElementById('i-rwa').value='';document.getElementById('i-rwm').value='';om('mo-rwuse');}
+function useReward(){const a=parseInt(document.getElementById('i-rwa').value);const m=document.getElementById('i-rwm').value.trim();if(!a||a<=0){toast('金額を入力');return;}D.rewardUses.push({id:Date.now().toString(36),date:td(),amount:a,memo:m});sv();cm('mo-rwuse');toast('ご褒美使用 ✓');render();}
+
+// Category edit
+let editCatId='';
+function editCatM(id){editCatId=id;const c=gc(id);document.getElementById('i-cen').value=c.name;document.getElementById('i-cei').value=c.icon;om('mo-catedit');}
+function saveCatEdit(){const n=document.getElementById('i-cen').value.trim();const i=document.getElementById('i-cei').value.trim()||'📌';if(!n){toast('名前を入力');return;}const c=D.categories.find(x=>x.id===editCatId);if(c){c.name=n;c.icon=i;}sv();cm('mo-catedit');toast('保存しました ✓');render();}
+
 render();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
 </script>
