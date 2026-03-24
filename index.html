@@ -21,7 +21,7 @@ body{
 font-family:-apple-system,'Hiragino Sans','Noto Sans JP',sans-serif;
 background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;
 -webkit-font-smoothing:antialiased;font-size:15px;line-height:1.4;
-padding-bottom:calc(50px + var(--sab))
+padding-bottom:calc(72px + var(--sab))
 }
 
 /* === Screens === */
@@ -137,18 +137,18 @@ display:flex;
 background:rgba(249,249,249,.94);
 backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 border-top:.5px solid var(--sep);
-padding:5px 0 calc(var(--sab));
+padding:8px 0 calc(10px + var(--sab));
 z-index:500
 }
-.tab-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:2px 0;cursor:pointer;border:none;background:none;font-family:inherit}
-.tab-ic{width:20px;height:20px}
-.tab-ic svg{width:20px;height:20px;fill:none;stroke:var(--sec);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:2px 0;cursor:pointer;border:none;background:none;font-family:inherit}
+.tab-ic{width:24px;height:24px}
+.tab-ic svg{width:24px;height:24px;fill:none;stroke:var(--sec);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .tab-i.on .tab-ic svg{stroke:var(--blue)}
 .tab-lb{font-size:10px;font-weight:500;color:var(--sec)}
 .tab-i.on .tab-lb{color:var(--blue)}
 
 /* === FAB === */
-.fab{position:fixed;bottom:calc(48px + var(--sab));right:16px;width:48px;height:48px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:26px;font-weight:300;cursor:pointer;box-shadow:0 4px 14px rgba(0,122,255,.3);display:flex;align-items:center;justify-content:center;z-index:499;transition:transform .15s}
+.fab{position:fixed;bottom:calc(66px + var(--sab));right:16px;width:48px;height:48px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:26px;font-weight:300;cursor:pointer;box-shadow:0 4px 14px rgba(0,122,255,.3);display:flex;align-items:center;justify-content:center;z-index:499;transition:transform .15s}
 .fab:active{transform:scale(.9)}
 
 /* === Modal === */
@@ -278,7 +278,12 @@ z-index:500
 
 <!-- ==================== MODALS ==================== -->
 <div class="mo" id="mo-exp"><div class="mo-s"><div class="mo-h"></div><div class="mo-t" id="mo-exp-t">支出を記録</div>
-<div class="fg"><label class="fl">金額</label><input class="fi" id="i-amt" type="number" inputmode="numeric" placeholder="500"></div>
+<div class="fg"><label class="fl">金額</label>
+<div style="display:flex;gap:6px;margin-bottom:6px"><button class="pill on" id="cur-jpy" onclick="A.setCur('jpy')">¥ 円</button><button class="pill" id="cur-usd" onclick="A.setCur('usd')">$ USD</button></div>
+<input class="fi" id="i-amt" type="number" inputmode="decimal" placeholder="500">
+<div id="usd-fields" style="display:none;margin-top:8px">
+<div style="display:flex;gap:6px"><div style="flex:1"><label class="fl" style="margin-bottom:3px">為替レート</label><input class="fi" id="i-rate" type="number" inputmode="decimal" placeholder="150.5"></div><div style="flex:1"><label class="fl" style="margin-bottom:3px">円換算</label><input class="fi" id="i-jpy" type="text" readonly style="background:#f0f0f0"></div></div>
+</div></div>
 <div class="fg"><label class="fl">メモ</label><input class="fi" id="i-memo" type="text" placeholder="セブンイレブン コーヒー"></div>
 <div class="fg"><label class="fl">カテゴリ</label><div class="pills" id="pills-cat"></div><div class="ia" id="ia-cat"><input id="ia-cn" placeholder="カテゴリ名"><input id="ia-ci" placeholder="😀" style="width:44px;flex:none" maxlength="4"><button onclick="A.inlineAddCat()">追加</button></div></div>
 <div class="fg"><label class="fl">支払い方法</label><div class="pills" id="pills-pay"></div></div>
@@ -287,7 +292,12 @@ z-index:500
 
 <div class="mo" id="mo-sub"><div class="mo-s"><div class="mo-h"></div><div class="mo-t" id="mo-sub-t">サブスクを追加</div>
 <div class="fg"><label class="fl">サービス名</label><input class="fi" id="i-sn" type="text" placeholder="Netflix"></div>
-<div class="fg"><label class="fl">金額</label><input class="fi" id="i-sa" type="number" inputmode="numeric" placeholder="1490"></div>
+<div class="fg"><label class="fl">金額</label>
+<div style="display:flex;gap:6px;margin-bottom:6px"><button class="pill on" id="scur-jpy" onclick="A.setSubCur('jpy')">¥ 円</button><button class="pill" id="scur-usd" onclick="A.setSubCur('usd')">$ USD</button></div>
+<input class="fi" id="i-sa" type="number" inputmode="numeric" placeholder="1490">
+<div id="susd-fields" style="display:none;margin-top:8px">
+<div style="display:flex;gap:6px"><div style="flex:1"><label class="fl" style="margin-bottom:3px">為替レート</label><input class="fi" id="i-srate" type="number" inputmode="decimal" placeholder="150.5"></div><div style="flex:1"><label class="fl" style="margin-bottom:3px">円換算</label><input class="fi" id="i-sjpy" type="text" readonly style="background:#f0f0f0"></div></div>
+</div></div>
 <div class="fg"><label class="fl">請求サイクル</label><div class="pills" id="pills-cyc"></div></div>
 <div class="fg"><label class="fl">次回支払日</label><input class="fi" id="i-snx" type="date"></div>
 <div class="fg"><label class="fl">支払い方法</label><div class="pills" id="pills-scc"></div></div>
@@ -444,7 +454,8 @@ const A={
     $('td-cd').style.display='';$('td-emp').style.display='none';
     const el=$('td-ls');
     el.innerHTML=ents.map(e=>{const c=gc(e.category);const t=new Date(e.ts);
-      return swHTML(c.c,c.icon,e.memo||c.name,`${c.name} · ${e.pay||''} · ${t.getHours()}:${p2(t.getMinutes())}`,`-${Y(e.amount)}`,`A.editExp('${e.id}')`,`A.cfmDelExp('${e.id}')`);
+      const usdInfo=e.usd?` · $${e.usdAmount}@${e.usdRate}`:'';
+      return swHTML(c.c,c.icon,e.memo||c.name,`${c.name} · ${e.pay||''}${usdInfo} · ${t.getHours()}:${p2(t.getMinutes())}`,`-${Y(e.amount)}`,`A.editExp('${e.id}')`,`A.cfmDelExp('${e.id}')`);
     }).join('');initSw(el);
   },
 
@@ -550,13 +561,22 @@ const A={
     }
   },
 
+  /* --- CURRENCY --- */
+  expCur:'jpy',subCur:'jpy',
+  setCur(c){this.expCur=c;$('cur-jpy').classList.toggle('on',c==='jpy');$('cur-usd').classList.toggle('on',c==='usd');$('usd-fields').style.display=c==='usd'?'':'none';$('i-amt').placeholder=c==='usd'?'20.00':'500';if(c==='usd')this.calcJpy();},
+  calcJpy(){const a=parseFloat($('i-amt').value)||0,r=parseFloat($('i-rate').value)||0;$('i-jpy').value=r>0?`¥${Math.round(a*r).toLocaleString()}`:'';},
+  setSubCur(c){this.subCur=c;$('scur-jpy').classList.toggle('on',c==='jpy');$('scur-usd').classList.toggle('on',c==='usd');$('susd-fields').style.display=c==='usd'?'':'none';$('i-sa').placeholder=c==='usd'?'9.99':'1490';if(c==='usd')this.calcSubJpy();},
+  calcSubJpy(){const a=parseFloat($('i-sa').value)||0,r=parseFloat($('i-srate').value)||0;$('i-sjpy').value=r>0?`¥${Math.round(a*r).toLocaleString()}`:'';},
+
   /* --- EXPENSE --- */
   openExpM(id){
     this.editId=id||null;const isE=!!id;
     $('mo-exp-t').textContent=isE?'支出を編集':'支出を記録';
     $('mo-exp-btn').textContent=isE?'保存する':'記録する';
-    if(isE){const e=D.expenses.find(x=>x.id===id);$('i-amt').value=e.amount;$('i-memo').value=e.memo;this.selC=e.category;this.selPay=e.pay||D.cards[0];}
-    else{$('i-amt').value='';$('i-memo').value='';this.selC=D.categories[0]?.id||'';this.selPay=D.cards[0]||'';}
+    this.setCur('jpy');
+    if(isE){const e=D.expenses.find(x=>x.id===id);$('i-amt').value=e.amount;$('i-memo').value=e.memo;this.selC=e.category;this.selPay=e.pay||D.cards[0];
+      if(e.usd){this.setCur('usd');$('i-amt').value=e.usdAmount;$('i-rate').value=e.usdRate;this.calcJpy();}
+    }else{$('i-amt').value='';$('i-memo').value='';$('i-rate').value='';this.selC=D.categories[0]?.id||'';this.selPay=D.cards[0]||'';}
     $('ia-cat').classList.remove('on');
     this.rCatPills();this.rPayPills();this.om('mo-exp');setTimeout(()=>$('i-amt').focus(),250);
   },
@@ -564,10 +584,18 @@ const A={
   rPayPills(){$('pills-pay').innerHTML=D.cards.map(c=>`<button class="pill${c===this.selPay?' on':''}" onclick="A.selPay='${c}';A.rPayPills()">${c}</button>`).join('');},
   inlineAddCat(){const n=$('ia-cn').value.trim(),i=$('ia-ci').value.trim()||'📌';if(!n){toast('名前を入力');return;}const id=uid();D.categories.push({id,name:n,icon:i,c:'def'});this.selC=id;save();$('ia-cn').value='';$('ia-ci').value='';$('ia-cat').classList.remove('on');this.rCatPills();toast('追加しました');},
   addExp(){
-    const amt=parseInt($('i-amt').value),memo=$('i-memo').value.trim();
-    if(!amt||amt<=0){toast('金額を入力');return;}
-    if(this.editId){const e=D.expenses.find(x=>x.id===this.editId);if(e){e.amount=amt;e.memo=memo;e.category=this.selC||'default';e.pay=this.selPay;}}
-    else D.expenses.push({id:uid(),date:today(),ts:Date.now(),amount:amt,memo,category:this.selC||'default',pay:this.selPay});
+    let amt;const memo=$('i-memo').value.trim();
+    let usdData=null;
+    if(this.expCur==='usd'){
+      const usdAmt=parseFloat($('i-amt').value),rate=parseFloat($('i-rate').value);
+      if(!usdAmt||usdAmt<=0||!rate||rate<=0){toast('金額と為替を入力');return;}
+      amt=Math.round(usdAmt*rate);usdData={usdAmount:usdAmt,usdRate:rate};
+    }else{
+      amt=parseInt($('i-amt').value);
+      if(!amt||amt<=0){toast('金額を入力');return;}
+    }
+    if(this.editId){const e=D.expenses.find(x=>x.id===this.editId);if(e){e.amount=amt;e.memo=memo;e.category=this.selC||'default';e.pay=this.selPay;e.usd=!!usdData;if(usdData){e.usdAmount=usdData.usdAmount;e.usdRate=usdData.usdRate;}else{delete e.usd;delete e.usdAmount;delete e.usdRate;}}}
+    else{const entry={id:uid(),date:today(),ts:Date.now(),amount:amt,memo,category:this.selC||'default',pay:this.selPay};if(usdData){entry.usd=true;entry.usdAmount=usdData.usdAmount;entry.usdRate=usdData.usdRate;}D.expenses.push(entry);}
     this.editId=null;save();this.cm('mo-exp');toast('記録しました ✓');this.render();
   },
   editExp(id){this.openExpM(id);},
@@ -578,17 +606,24 @@ const A={
     this.editSubId=id||null;const isE=!!id;
     $('mo-sub-t').textContent=isE?'サブスクを編集':'サブスクを追加';
     $('mo-sub-btn').textContent=isE?'保存する':'追加する';
-    if(isE){const s=D.subscriptions.find(x=>x.id===id);$('i-sn').value=s.name;$('i-sa').value=s.amount;$('i-snx').value=s.nextDate||'';this.selCyc=s.cycle||'monthly';this.selSCC=s.card||'';}
-    else{$('i-sn').value='';$('i-sa').value='';$('i-snx').value='';this.selCyc='monthly';this.selSCC=D.cards[0]||'';}
+    this.setSubCur('jpy');
+    if(isE){const s=D.subscriptions.find(x=>x.id===id);$('i-sn').value=s.name;$('i-sa').value=s.usd?s.usdAmount:s.amount;$('i-snx').value=s.nextDate||'';this.selCyc=s.cycle||'monthly';this.selSCC=s.card||'';
+      if(s.usd){this.setSubCur('usd');$('i-srate').value=s.usdRate;this.calcSubJpy();}
+    }else{$('i-sn').value='';$('i-sa').value='';$('i-snx').value='';$('i-srate').value='';this.selCyc='monthly';this.selSCC=D.cards[0]||'';}
     this.rCycPills();this.rSCCPills();this.om('mo-sub');setTimeout(()=>$('i-sn').focus(),250);
   },
   rCycPills(){$('pills-cyc').innerHTML=[['monthly','月額'],['yearly','年額']].map(([v,l])=>`<button class="pill${v===this.selCyc?' on':''}" onclick="A.selCyc='${v}';A.rCycPills()">${l}</button>`).join('');},
   rSCCPills(){$('pills-scc').innerHTML=D.cards.map(c=>`<button class="pill${c===this.selSCC?' on':''}" onclick="A.selSCC='${c}';A.rSCCPills()">${c}</button>`).join('');},
   saveSub(){
-    const n=$('i-sn').value.trim(),a=parseInt($('i-sa').value),nx=$('i-snx').value;
-    if(!n||!a){toast('名前と金額を入力');return;}
-    if(this.editSubId){const s=D.subscriptions.find(x=>x.id===this.editSubId);if(s){s.name=n;s.amount=a;s.cycle=this.selCyc;s.nextDate=nx;s.card=this.selSCC;}}
-    else D.subscriptions.push({id:uid(),name:n,amount:a,day:1,card:this.selSCC,cycle:this.selCyc,nextDate:nx});
+    const n=$('i-sn').value.trim(),nx=$('i-snx').value;
+    let a,usdData=null;
+    if(this.subCur==='usd'){
+      const ua=parseFloat($('i-sa').value),rate=parseFloat($('i-srate').value);
+      if(!n||!ua||!rate){toast('名前・金額・為替を入力');return;}
+      a=Math.round(ua*rate);usdData={usdAmount:ua,usdRate:rate};
+    }else{a=parseInt($('i-sa').value);if(!n||!a){toast('名前と金額を入力');return;}}
+    if(this.editSubId){const s=D.subscriptions.find(x=>x.id===this.editSubId);if(s){s.name=n;s.amount=a;s.cycle=this.selCyc;s.nextDate=nx;s.card=this.selSCC;s.usd=!!usdData;if(usdData){s.usdAmount=usdData.usdAmount;s.usdRate=usdData.usdRate;}else{delete s.usd;delete s.usdAmount;delete s.usdRate;}}}
+    else{const entry={id:uid(),name:n,amount:a,day:1,card:this.selSCC,cycle:this.selCyc,nextDate:nx};if(usdData){entry.usd=true;entry.usdAmount=usdData.usdAmount;entry.usdRate=usdData.usdRate;}D.subscriptions.push(entry);}
     this.editSubId=null;save();this.cm('mo-sub');toast('保存しました ✓');this.render();
   },
   editSub(id){this.openSubM(id);},
@@ -653,6 +688,11 @@ $('btn-card-add').addEventListener('click',()=>A.openCardM());
 $('mo-exp-btn').addEventListener('click',()=>A.addExp());
 $('mo-sub-btn').addEventListener('click',()=>A.saveSub());
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)A.cm(m.id);}));
+// USD auto-calc
+$('i-amt').addEventListener('input',()=>{if(A.expCur==='usd')A.calcJpy();});
+$('i-rate').addEventListener('input',()=>A.calcJpy());
+$('i-sa').addEventListener('input',()=>{if(A.subCur==='usd')A.calcSubJpy();});
+$('i-srate').addEventListener('input',()=>A.calcSubJpy());
 
 /* ========== INIT ========== */
 A.render();
