@@ -24,7 +24,7 @@ font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-seri
 background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;
 -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;
 max-width:480px;margin:0 auto;
-padding-bottom:calc(82px + var(--sab));
+padding-bottom:calc(64px + var(--sab));
 font-variant-numeric:tabular-nums
 }
 
@@ -95,8 +95,9 @@ font-variant-numeric:tabular-nums
 /* === Stat grid === */
 .sg{display:grid;grid-template-columns:1fr 1fr}
 .sg3{display:grid;grid-template-columns:1fr 1fr 1fr}
-.sg-c{padding:14px 16px}.sg-c-l{font-size:11px;font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
-.sg-c-v{font-size:28px;font-weight:700;letter-spacing:-1px}.sg-c-s{font-size:10px;font-weight:500;color:var(--ter);margin-top:2px}
+.sg-c{padding:12px 10px;overflow:hidden}.sg-c-l{font-size:11px;font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.sg-c-v{font-size:20px;font-weight:700;letter-spacing:-1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sg-c-s{font-size:10px;font-weight:500;color:var(--ter);margin-top:2px}
+.sg3 .sg-c-v{font-size:17px}
 .sg-br{border-right:.5px solid var(--sep)}.sg-bb{border-bottom:.5px solid var(--sep)}
 
 /* === Month bar === */
@@ -142,7 +143,7 @@ display:flex;
 background:rgba(255,255,255,0.92);
 backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 border-top:.5px solid var(--sep);
-padding:10px 0 calc(18px + var(--sab));
+padding:8px 0 var(--sab);
 z-index:500
 }
 .tab-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:none;font-family:inherit}
@@ -153,7 +154,7 @@ z-index:500
 .tab-i.on .tab-lb{color:var(--text)}
 
 /* === FAB === */
-.fab{position:fixed;bottom:calc(80px + var(--sab));right:16px;width:44px;height:44px;background:var(--text);border:none;border-radius:50%;color:#fff;font-size:24px;font-weight:300;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;z-index:499;transition:transform .15s}
+.fab{position:fixed;bottom:calc(60px + var(--sab));right:16px;width:44px;height:44px;background:var(--text);border:none;border-radius:50%;color:#fff;font-size:24px;font-weight:300;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;z-index:499;transition:transform .15s}
 .fab:active{transform:scale(.97)}
 
 /* === Modal === */
@@ -520,7 +521,7 @@ const A={
       let h=`<div class="cd"><div class="sg3"><div class="sg-c sg-br"><div class="sg-c-l">週合計</div><div class="sg-c-v">${Y(total)}</div></div><div class="sg-c sg-br"><div class="sg-c-l">予算</div><div class="sg-c-v">${Y(bud)}</div></div><div class="sg-c"><div class="sg-c-l">残り</div><div class="sg-c-v" style="color:${diff>=0?'var(--grn)':'var(--red)'};">${Y(diff)}</div></div></div></div>`;
       h+=`<div class="cd" style="padding:14px"><div style="display:flex;align-items:flex-end;gap:5px;height:100px">`;
       Object.keys(bd).sort().forEach((day,i)=>{const v=bd[day];const ht=mx>0?Math.round(v/mx*75):0;const ov=v>D.settings.dailyBudget;const isT=day===today();
-        h+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-size:8px;color:var(--sec)">${v>0?Y(v):''}</div><div style="width:100%;height:75px;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:${Math.max(ht,2)}px;border-radius:3px 3px 0 0;background:${ov?'var(--red)':isT?'var(--blue)':'rgba(0,122,255,.3)'}"></div></div><div style="font-size:10px;color:${isT?'var(--blue)':'var(--sec)'};font-weight:${isT?'600':'400'}">${WDS[i]}</div></div>`;
+        h+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-size:8px;color:var(--sec)">${v>0?Y(v):''}</div><div style="width:100%;height:75px;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:${Math.max(ht,2)}px;border-radius:3px 3px 0 0;background:${ov?'var(--red)':isT?'var(--text)':'rgba(29,29,31,.25)'}"></div></div><div style="font-size:10px;color:${isT?'var(--text)':'var(--ter)'};font-weight:${isT?'700':'500'}">${WDS[i]}</div></div>`;
       });h+=`</div></div>`;ct.innerHTML=h;
     }else if(this.rvM==='month'){
       ref.setMonth(ref.getMonth()+this.rvOff);const mo=mkey(ref);const[y,mn]=mo.split('-').map(Number);
