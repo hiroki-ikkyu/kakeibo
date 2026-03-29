@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="theme-color" content="#F2F2F7">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://hiroki-ikkyu.github.io/ceo-portal/shared-store.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -645,7 +646,7 @@ const A={
     }
     if(this.editId){const e=D.expenses.find(x=>x.id===this.editId);if(e){e.amount=amt;e.memo=memo;e.category=this.selC||'default';e.pay=this.selPay;e.usd=!!usdData;if(usdData){e.usdAmount=usdData.usdAmount;e.usdRate=usdData.usdRate;}else{delete e.usd;delete e.usdAmount;delete e.usdRate;}}}
     else{const entry={id:uid(),date:today(),ts:Date.now(),amount:amt,memo,category:this.selC||'default',pay:this.selPay};if(usdData){entry.usd=true;entry.usdAmount=usdData.usdAmount;entry.usdRate=usdData.usdRate;}D.expenses.push(entry);}
-    this.editId=null;save();this.cm('mo-exp');toast('記録しました ✓');this.render();if(this.cur==='review')this.renderReview();
+    this.editId=null;save();if(typeof SharedStore!=='undefined'){const td=tExp();const spent=td.reduce((s,e)=>s+e.amount,0);SharedStore.expense.logDay({spent,budget:D.settings.dailyBudget});}this.cm('mo-exp');toast('記録しました ✓');this.render();if(this.cur==='review')this.renderReview();
   },
   editExp(id){this.openExpM(id);},
   editExpFrom(id){this.openExpM(id);},
