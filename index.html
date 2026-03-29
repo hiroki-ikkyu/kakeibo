@@ -344,10 +344,11 @@ z-index:500
 <button class="btn btn-p" onclick="A.addWish()">追加する</button>
 </div></div>
 
-<div class="mo" id="mo-rwuse"><div class="mo-s"><div class="mo-h"></div><div class="mo-t">ご褒美を使う</div>
+<div class="mo" id="mo-rwuse"><div class="mo-s"><div class="mo-h"></div><div class="mo-t" id="mo-rwuse-t">ご褒美を使う</div>
 <div class="fg"><label class="fl">金額</label><input class="fi" id="i-rwa" type="number" inputmode="numeric" placeholder="5000"></div>
 <div class="fg"><label class="fl">何に使った？</label><input class="fi" id="i-rwm" type="text" placeholder="AirPods Pro"></div>
-<button class="btn btn-p" style="background:var(--grn)" onclick="A.useReward()">使用する</button>
+<button class="btn btn-p" id="mo-rwuse-btn" style="background:var(--grn)" onclick="A.saveRwUse()">使用する</button>
+<button class="btn btn-d" id="mo-rwuse-del" style="display:none" onclick="A.cfmDelRwUse()">削除する</button>
 </div></div>
 
 <div class="mo" id="mo-cfm"><div class="mo-s" style="text-align:center"><div class="mo-h"></div><div class="mo-t" id="cfm-t">確認</div>
@@ -418,7 +419,7 @@ const A={
   cur:'today',vm:mkey(),rvM:'week',rvOff:0,
   selC:'',selPay:'',editId:null,
   selCyc:'monthly',selSCC:'',editSubId:null,
-  selIncT:'salary',editCatId:null,editSetF:'',
+  selIncT:'salary',editCatId:null,editSetF:'',editRwId:null,
 
   /* --- NAV --- */
   go(s){
@@ -606,7 +607,7 @@ const A={
       h+=`<div class="sh">使用履歴</div><div class="cd">`;
       if(!uses.length)h+=`<div class="emp">まだ使用していません</div>`;
       else uses.sort((a,b)=>b.date.localeCompare(a.date)).forEach((u,i)=>{
-        h+=`<div class="bkr${i>0?'" style="border-top:.5px solid var(--sep)':''}"><div class="bkr-ic" style="background:rgba(52,199,89,.08)">🎁</div><span class="bkr-nm">${u.memo||'ご褒美'}</span><span class="bkr-am">${Y(u.amount)}</span><span class="bkr-pc" style="width:auto">${u.date.slice(5).replace('-','/')}</span></div>`;
+        h+=`<div class="bkr" onclick="A.openRwUseM('${u.id}')" style="cursor:pointer${i>0?';border-top:.5px solid var(--sep)':''}"><div class="bkr-ic" style="background:rgba(52,199,89,.08)">🎁</div><span class="bkr-nm">${u.memo||'ご褒美'}</span><span class="bkr-am">${Y(u.amount)}</span><span class="bkr-pc" style="width:auto">${u.date.slice(5).replace('-','/')}</span></div>`;
       });h+=`</div>`;ct.innerHTML=h;
     }
   },
@@ -720,8 +721,9 @@ const A={
   cfmDelWish(id){this.showCfm('欲しいものを削除','削除しますか？','削除する',()=>{D.wishlist=D.wishlist.filter(w=>w.id!==id);save();toast('削除しました');this.render();});},
 
   /* --- REWARD USE --- */
-  openRwUseM(){$('i-rwa').value='';$('i-rwm').value='';this.om('mo-rwuse');},
-  useReward(){const a=parseInt($('i-rwa').value),m=$('i-rwm').value.trim();if(!a||a<=0){toast('金額を入力');return;}D.rewardUses.push({id:uid(),date:today(),amount:a,memo:m});save();this.cm('mo-rwuse');toast('ご褒美使用 ✓');this.render();},
+  openRwUseM(id){this.editRwId=id||null;const u=id?D.rewardUses.find(x=>x.id===id):null;$('i-rwa').value=u?u.amount:'';$('i-rwm').value=u?u.memo:'';$('mo-rwuse-t').textContent=u?'履歴を編集':'ご褒美を使う';$('mo-rwuse-btn').textContent=u?'保存する':'使用する';$('mo-rwuse-del').style.display=u?'':'none';this.om('mo-rwuse');},
+  saveRwUse(){const a=parseInt($('i-rwa').value),m=$('i-rwm').value.trim();if(!a||a<=0){toast('金額を入力');return;}const isEdit=!!this.editRwId;if(isEdit){const u=D.rewardUses.find(x=>x.id===this.editRwId);if(u){u.amount=a;u.memo=m;}}else{D.rewardUses.push({id:uid(),date:today(),amount:a,memo:m});}this.editRwId=null;save();this.cm('mo-rwuse');toast(isEdit?'更新しました ✓':'ご褒美使用 ✓');this.render();},
+  cfmDelRwUse(){const id=this.editRwId;this.showCfm('使用履歴を削除','この記録を削除しますか？','削除する',()=>{D.rewardUses=D.rewardUses.filter(u=>u.id!==id);this.editRwId=null;save();this.cm('mo-rwuse');toast('削除しました');this.render();});},
 
   /* --- EXPORT --- */
   doExport(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`kakeibo_${today()}.json`;a.click();toast('エクスポート完了');}
