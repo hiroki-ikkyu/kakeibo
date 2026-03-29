@@ -631,7 +631,7 @@ const A={
     this.rCatPills();this.rPayPills();this.om('mo-exp');setTimeout(()=>$('i-amt').focus(),250);
   },
   rCatPills(){$('pills-cat').innerHTML=D.categories.map(c=>`<button class="pill${c.id===this.selC?' on':''}" onclick="A.selC='${c.id}';A.rCatPills()">${c.icon} ${c.name}</button>`).join('')+`<button class="pill-add" onclick="$('ia-cat').classList.add('on')">+ 新規</button>`;},
-  rPayPills(){$('pills-pay').innerHTML=D.cards.map(c=>`<button class="pill${c===this.selPay?' on':''}" onclick="A.selPay='${c}';A.rPayPills()">${c}</button>`).join('');},
+  rPayPills(){$('pills-pay').innerHTML=D.cards.map(c=>`<button class="pill${c===this.selPay?' on':''}" onclick="A.selPay='${c}';A.rPayPills()">${c}</button>`).join('')+`<button class="pill-add" onclick="A.openCardM()">+ 新規</button>`;},
   inlineAddCat(){const n=$('ia-cn').value.trim(),i=$('ia-ci').value.trim()||'📌';if(!n){toast('名前を入力');return;}const id=uid();D.categories.push({id,name:n,icon:i,c:'def'});this.selC=id;save();$('ia-cn').value='';$('ia-ci').value='';$('ia-cat').classList.remove('on');this.rCatPills();toast('追加しました');},
   addExp(){
     let amt;const memo=$('i-memo').value.trim();
@@ -711,7 +711,7 @@ const A={
 
   /* --- CARD --- */
   openCardM(){$('i-crd').value='';this.om('mo-card');},
-  addCard(){const n=$('i-crd').value.trim();if(!n){toast('名前を入力');return;}D.cards.push(n);save();this.cm('mo-card');toast('追加しました ✓');this.render();},
+  addCard(){const n=$('i-crd').value.trim();if(!n){toast('名前を入力');return;}D.cards.push(n);save();this.cm('mo-card');toast('追加しました ✓');this.rPayPills();this.render();},
   cfmDelCard(i){if(D.cards.length<=1){toast('最低1つ必要');return;}this.showCfm('支払い方法を削除',`${D.cards[i]}を削除しますか？`,'削除する',()=>{D.cards.splice(i,1);save();toast('削除しました');this.render();});},
 
   /* --- WISHLIST --- */
