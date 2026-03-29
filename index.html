@@ -270,8 +270,11 @@ z-index:500
 <div class="sh" style="margin-top:14px">支払い方法</div>
 <div class="cd" style="padding:12px 14px" id="sv-cards"></div>
 <div style="padding:0 16px"><button class="btn btn-s" id="btn-card-add">支払い方法を追加</button></div>
-<div class="sh" style="margin-top:14px">データ</div>
-<div style="padding:0 16px"><button class="btn btn-s" onclick="A.doExport()">データをエクスポート</button></div>
+<div class="sh" style="margin-top:14px">データ管理</div>
+<div style="padding:0 16px;display:flex;gap:8px">
+  <button class="btn btn-s" style="flex:1" onclick="A.doBackup()">データをバックアップ</button>
+  <button class="btn btn-s" style="flex:1" onclick="A.doImport()">データを復元</button>
+</div>
 <div style="height:40px"></div>
 </div>
 
@@ -725,8 +728,9 @@ const A={
   saveRwUse(){const a=parseInt($('i-rwa').value),m=$('i-rwm').value.trim();if(!a||a<=0){toast('金額を入力');return;}const isEdit=!!this.editRwId;if(isEdit){const u=D.rewardUses.find(x=>x.id===this.editRwId);if(u){u.amount=a;u.memo=m;}}else{D.rewardUses.push({id:uid(),date:today(),amount:a,memo:m});}this.editRwId=null;save();this.cm('mo-rwuse');toast(isEdit?'更新しました ✓':'ご褒美使用 ✓');this.render();},
   cfmDelRwUse(){const id=this.editRwId;this.showCfm('使用履歴を削除','この記録を削除しますか？','削除する',()=>{D.rewardUses=D.rewardUses.filter(u=>u.id!==id);this.editRwId=null;save();this.cm('mo-rwuse');toast('削除しました');this.render();});},
 
-  /* --- EXPORT --- */
-  doExport(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`kakeibo_${today()}.json`;a.click();toast('エクスポート完了');}
+  /* --- BACKUP / RESTORE --- */
+  doBackup(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`kakeibo_${today()}.json`;a.click();URL.revokeObjectURL(a.href);toast('バックアップ完了');},
+  doImport(){const i=document.createElement('input');i.type='file';i.accept='.json';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{if(!confirm('現在のデータを上書きしますか？'))return;try{JSON.parse(ev.target.result);localStorage.setItem(KEY,ev.target.result);location.reload();}catch{alert('ファイルが無効です。');}};r.readAsText(f);};i.click();}
 };
 
 /* ========== EVENT BINDING ========== */
